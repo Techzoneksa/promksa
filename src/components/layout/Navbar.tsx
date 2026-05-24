@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -39,7 +40,7 @@ export function Navbar() {
           )}
           aria-label="التنقل الرئيسي"
         >
-          <a href="#home" className="flex items-center gap-3" aria-label="Prominent Experts">
+          <Link href="/" className="flex items-center gap-3" aria-label="Prominent Experts">
             <Image
               src="/prominent-logo.svg"
               alt="Prominent Experts"
@@ -48,22 +49,22 @@ export function Navbar() {
               priority
               className="h-9 w-auto"
             />
-          </a>
+          </Link>
 
           <div className="hidden items-center gap-1 lg:flex">
-            {navLinks.slice(0, 5).map((link) => (
-              <a
-                key={link.href + link.label}
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
                 href={link.href}
                 className="rounded-brand px-4 py-2 text-sm font-semibold text-brand-muted transition duration-300 hover:bg-[#F4F0FF] hover:text-brand-primary"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 
           <div className="hidden lg:block">
-            <CTAButton href="#contact" variant="primary" className="min-h-11 px-5 py-2.5">
+            <CTAButton href="/contact" variant="primary" className="min-h-11 px-5 py-2.5">
               تواصل معنا
             </CTAButton>
           </div>
@@ -93,18 +94,18 @@ export function Navbar() {
               <div className="overflow-hidden rounded-brand border border-[#f0edff] bg-white p-3 shadow-brand-card">
                 <div className="grid gap-1">
                   {navLinks.map((link) => (
-                    <a
-                      key={link.href + link.label}
+                    <Link
+                      key={link.href}
                       href={link.href}
                       onClick={() => setIsOpen(false)}
                       className="rounded-brand px-4 py-3 text-sm font-bold text-brand-muted transition duration-300 hover:bg-[#F4F0FF] hover:text-brand-primary"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   ))}
                 </div>
                 <CTAButton
-                  href="#contact"
+                  href="/contact"
                   variant="primary"
                   className="mt-3 w-full"
                   onClick={() => setIsOpen(false)}

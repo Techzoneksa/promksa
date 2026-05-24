@@ -1,21 +1,16 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Instagram, Linkedin, Mail, MapPin, MessageCircle, Phone, X } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-
-const serviceLinks = [
-  "تصميم المواقع",
-  "تصميم المتاجر",
-  "تطبيقات الجوال",
-  "التسويق الرقمي",
-  "الهوية البصرية",
-];
+import { services } from "@/lib/constants";
 
 const quickLinks = [
-  { label: "الرئيسية", href: "#home" },
-  { label: "من نحن", href: "#about" },
-  { label: "خدماتنا", href: "#services" },
-  { label: "أعمالنا", href: "#portfolio" },
-  { label: "تواصل معنا", href: "#contact" },
+  { label: "الرئيسية", href: "/" },
+  { label: "من نحن", href: "/about" },
+  { label: "خدماتنا", href: "/services" },
+  { label: "أعمالنا", href: "/portfolio" },
+  { label: "المدونة", href: "/blog" },
+  { label: "تواصل معنا", href: "/contact" },
 ];
 
 const socialLinks = [
@@ -60,11 +55,11 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-bold text-white">الخدمات</h3>
             <ul className="mt-5 space-y-3 text-sm text-white/70">
-              {serviceLinks.map((item) => (
-                <li key={item}>
-                  <a href="#services" className="transition duration-300 hover:text-[#41C7D7]">
-                    {item}
-                  </a>
+              {services.map((s) => (
+                <li key={s.slug}>
+                  <Link href={`/services/${s.slug}`} className="transition duration-300 hover:text-[#41C7D7]">
+                    {s.title}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -75,9 +70,9 @@ export function Footer() {
             <ul className="mt-5 space-y-3 text-sm text-white/70">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <a href={link.href} className="transition duration-300 hover:text-[#41C7D7]">
+                  <Link href={link.href} className="transition duration-300 hover:text-[#41C7D7]">
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

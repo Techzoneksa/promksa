@@ -26,8 +26,18 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Prominent Experts",
-  description: "وكالة تصميم وتسويق رقمي في السعودية",
+  title: {
+    default: "Prominent Experts",
+    template: "%s | Prominent Experts",
+  },
+  description: "وكالة تصميم وتسويق رقمي في السعودية - تصميم مواقع، متاجر إلكترونية، تطبيقات جوال، هوية بصرية.",
+  robots: { index: true, follow: true },
+  openGraph: {
+    siteName: "Prominent Experts",
+    locale: "ar_SA",
+    type: "website",
+  },
+  icons: { icon: "/prominent-logo.svg" },
 };
 
 export default function RootLayout({
@@ -37,6 +47,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Prominent Experts",
+              url: "https://promksa.com",
+              logo: "https://promksa.com/prominent-logo.svg",
+              description: "وكالة تصميم وتسويق رقمي في السعودية",
+              address: { "@type": "PostalAddress", addressLocality: "جدة", addressCountry: "SA" },
+              contactPoint: { "@type": "ContactPoint", telephone: "+966595394940", contactType: "customer service" },
+            }),
+          }}
+        />
+      </head>
       <body className={`${almarai.variable} ${ibmPlexArabic.variable} ${jetBrainsMono.variable} font-body antialiased`}>
         <Navbar />
         <main>{children}</main>
