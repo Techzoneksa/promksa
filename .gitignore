@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.npm-cache/
+.chrome-qa-profile/
+out/
+*.tsbuildinfo
+*.log
+.env*
+!.env.example
