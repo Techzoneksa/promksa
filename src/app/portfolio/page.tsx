@@ -8,7 +8,7 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { projects } from "@/lib/constants";
 
-const filters = ["الكل", "مواقع", "متاجر", "تطبيقات", "هوية بصرية"];
+const filters = ["الكل", "مواقع", "متاجر", "تطبيقات", "هوية بصرية", "ذكاء اصطناعي"];
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState("الكل");

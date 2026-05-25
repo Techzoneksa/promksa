@@ -4,8 +4,7 @@ import { ArrowLeft, MonitorSmartphone, ShoppingBag, Smartphone, Sparkles, Megaph
 import { PageHero } from "@/components/ui/PageHero";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
-import { steps } from "@/lib/constants";
-import { services } from "@/lib/constants";
+import { steps, services } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "خدماتنا | Prominent Experts",
@@ -30,10 +29,10 @@ export default function ServicesPage() {
               return (
                 <Reveal key={s.slug} delay={i * 0.04}>
                   <Link href={`/services/${s.slug}`} className="group block h-full">
-                    <div className="flex h-full flex-col rounded-2xl bg-brand-primary p-8 text-white transition duration-300 hover:shadow-brand-card-hover hover:-translate-y-1">
+                    <div className="flex h-full flex-col rounded-3xl bg-brand-primary p-8 text-white transition duration-300 hover:shadow-apple-hover hover:-translate-y-1">
                       <div className="mb-5 flex items-center justify-between">
                         <span className="text-3xl font-bold text-white/20">{s.number}</span>
-                        <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 transition group-hover:scale-110 group-hover:bg-white/20">
+                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 transition group-hover:scale-110 group-hover:bg-white/20">
                           <Icon className="h-5 w-5" />
                         </span>
                       </div>
@@ -51,6 +50,22 @@ export default function ServicesPage() {
         </Container>
       </section>
 
+      <section className="section-padding bg-gradient-to-br from-[#F4F0FF] via-white to-white">
+        <Container>
+          <Reveal>
+            <div className="relative overflow-hidden rounded-3xl bg-ai-gradient p-10 text-center text-white shadow-soft-glow-ai sm:p-16">
+              <h2 className="text-3xl font-bold sm:text-4xl">هل تبحث عن حلول ذكاء اصطناعي؟</h2>
+              <p className="mx-auto mt-4 max-w-2xl text-white/80">نقدم حلول AI متكاملة: روبوتات محادثة، أتمتة، تحليل بيانات، والمزيد.</p>
+              <div className="mt-8">
+                <Link href="/ai-solutions" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-white px-8 py-3 text-sm font-bold text-brand-primary transition hover:shadow-xl hover:-translate-y-0.5">
+                  استكشف حلول الذكاء الاصطناعي <ArrowLeft className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+
       <section className="section-padding bg-[#F7F8FC]">
         <Container>
           <Reveal>
@@ -63,7 +78,7 @@ export default function ServicesPage() {
           <div className="grid gap-6 md:grid-cols-5">
             {steps.map((step, i) => (
               <Reveal key={step.number} delay={i * 0.06}>
-                <div className="rounded-2xl border border-[#f0edff] bg-white p-6 text-center shadow-brand-card">
+                <div className="rounded-2xl border border-[#f0edff] bg-white p-6 text-center shadow-apple">
                   <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-primary text-lg font-bold text-white">{step.number}</span>
                   <h3 className="mt-4 text-lg font-bold text-brand-text">{step.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-brand-muted">{step.desc}</p>
@@ -80,7 +95,7 @@ export default function ServicesPage() {
             <h2 className="text-3xl leading-tight text-brand-text sm:text-4xl">اختر الخدمة المناسبة لمشروعك</h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-brand-muted">نقدم حلولاً مرنة تناسب مختلف الأحجام والميزانيات</p>
             <div className="mt-8">
-              <a href="/contact" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-brand-primary px-8 py-3 text-sm font-bold text-white transition hover:bg-brand-primary/90 hover:shadow-brand-card-hover">تواصل معنا</a>
+              <Link href="/contact" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-brand-primary px-8 py-3 text-sm font-bold text-white transition hover:shadow-apple-hover hover:-translate-y-0.5">تواصل معنا</Link>
             </div>
           </Reveal>
         </Container>

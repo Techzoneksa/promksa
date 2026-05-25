@@ -11,20 +11,23 @@
   --color-light-purple: #F4F0FF;
   --color-accent-cyan: #41C7D7;
   --color-accent-cyan-rgb: 65 199 215;
+  --color-ai-blue: #3B82F6;
+  --color-ai-blue-rgb: 59 130 246;
   --color-text-primary: #1F1F2E;
   --color-text-secondary: #6B6B7A;
   --color-primary-rgb: 116 72 245;
   --color-primary-dark-rgb: 43 20 95;
   --color-primary-light-rgb: 139 111 245;
   --color-surface-rgb: 255 255 255;
-  --color-accent-cyan: #41C7D7;
-  --color-accent-cyan-rgb: 65 199 215;
   --color-text-primary-rgb: 31 31 46;
   --color-text-secondary-rgb: 107 107 122;
   --font-heading: "Almarai";
   --font-body: "IBM Plex Sans Arabic";
   --font-mono: "JetBrains Mono";
-  --radius-brand: 12px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
 }
 
 * {
@@ -45,6 +48,8 @@ body {
   color: var(--color-text-primary);
   font-family: var(--font-body), Tahoma, Arial, sans-serif;
   text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body::selection {
@@ -52,15 +57,8 @@ body::selection {
   color: var(--color-text-primary);
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
+a { color: inherit; text-decoration: none; }
+button, a { -webkit-tap-highlight-color: transparent; }
 
 @layer base {
   h1, h2, h3, h4, h5, h6 {
@@ -71,11 +69,23 @@ a {
 
 @layer components {
   .section-padding {
-    @apply py-16 md:py-20 lg:py-24;
+    @apply py-20 md:py-28 lg:py-32;
   }
 
-  .brand-card {
-    @apply rounded-brand bg-white shadow-[0_4px_24px_rgba(116,72,245,0.08)] border border-[#f0edff];
+  .apple-card {
+    @apply rounded-3xl bg-white shadow-[0_2px_40px_rgba(0,0,0,0.04)] border border-[#f0edff] transition-all duration-500;
+  }
+
+  .apple-card-hover {
+    @apply hover:shadow-[0_8px_60px_rgba(116,72,245,0.10)] hover:-translate-y-1;
+  }
+
+  .glass-card {
+    @apply rounded-3xl bg-white/80 backdrop-blur-xl border border-white/20 shadow-lg;
+  }
+
+  .gradient-border {
+    @apply relative overflow-hidden rounded-3xl;
   }
 }
 
@@ -84,10 +94,7 @@ a {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
-
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
 
   .bg-purple-gradient {
     background: linear-gradient(135deg, #7448F5 0%, #8B6FF5 50%, #41C7D7 100%);
@@ -95,5 +102,22 @@ a {
 
   .bg-hero-gradient {
     background: linear-gradient(135deg, #F4F0FF 0%, #FFFFFF 50%, #E8F8FA 100%);
+  }
+
+  .bg-ai-gradient {
+    background: linear-gradient(135deg, #7448F5 0%, #3B82F6 50%, #41C7D7 100%);
+  }
+
+  .text-gradient-ai {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #7448F5, #3B82F6, #41C7D7);
+  }
+
+  .soft-glow {
+    box-shadow: 0 0 60px rgba(116, 72, 245, 0.12);
+  }
+
+  .soft-glow-ai {
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.12);
   }
 }

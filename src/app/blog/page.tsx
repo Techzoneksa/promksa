@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: { title: "المدونة | Prominent Experts", description: "مقالات ونصائح رقمية." },
 };
 
-const categories = ["الكل", "تصميم المواقع", "المتاجر الإلكترونية", "التسويق الرقمي", "الهوية البصرية", "التطبيقات"];
+const categories = ["الكل", "تصميم المواقع", "المتاجر الإلكترونية", "التسويق الرقمي", "الهوية البصرية", "التطبيقات", "ذكاء اصطناعي"];
 
 export default function BlogPage() {
   return (

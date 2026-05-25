@@ -23,9 +23,7 @@ export function Navbar() {
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
   return (
@@ -33,22 +31,15 @@ export function Navbar() {
       <Container>
         <nav
           className={cn(
-            "flex h-16 items-center justify-between rounded-brand border px-3 transition duration-300 md:px-4",
+            "flex h-16 items-center justify-between rounded-2xl border px-3 transition duration-300 md:px-4",
             isScrolled || isOpen
-              ? "border-[#f0edff] bg-white/90 shadow-brand-card backdrop-blur-xl"
+              ? "border-[#f0edff] bg-white/90 shadow-apple backdrop-blur-xl"
               : "border-transparent bg-transparent",
           )}
           aria-label="التنقل الرئيسي"
         >
           <Link href="/" className="flex items-center gap-3" aria-label="Prominent Experts">
-            <Image
-              src="/prominent-logo.svg"
-              alt="Prominent Experts"
-              width={168}
-              height={46}
-              priority
-              className="h-9 w-auto"
-            />
+            <Image src="/prominent-logo.svg" alt="Prominent Experts" width={168} height={46} priority className="h-9 w-auto" />
           </Link>
 
           <div className="hidden items-center gap-1 lg:flex">
@@ -56,7 +47,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-brand px-4 py-2 text-sm font-semibold text-brand-muted transition duration-300 hover:bg-[#F4F0FF] hover:text-brand-primary"
+                className="rounded-xl px-4 py-2 text-sm font-semibold text-brand-muted transition duration-300 hover:bg-[#F4F0FF] hover:text-brand-primary"
               >
                 {link.label}
               </Link>
@@ -71,7 +62,7 @@ export function Navbar() {
 
           <button
             type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-brand border border-[#f0edff] bg-white text-brand-muted transition duration-300 hover:border-brand-primary/30 hover:text-brand-primary lg:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#f0edff] bg-white text-brand-muted transition duration-300 hover:border-brand-primary/30 hover:text-brand-primary lg:hidden"
             onClick={() => setIsOpen((current) => !current)}
             aria-expanded={isOpen}
             aria-label={isOpen ? "إغلاق القائمة" : "فتح القائمة"}
@@ -91,25 +82,20 @@ export function Navbar() {
             className="lg:hidden"
           >
             <Container className="pt-3">
-              <div className="overflow-hidden rounded-brand border border-[#f0edff] bg-white p-3 shadow-brand-card">
+              <div className="overflow-hidden rounded-2xl border border-[#f0edff] bg-white p-3 shadow-apple">
                 <div className="grid gap-1">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="rounded-brand px-4 py-3 text-sm font-bold text-brand-muted transition duration-300 hover:bg-[#F4F0FF] hover:text-brand-primary"
+                      className="rounded-xl px-4 py-3 text-sm font-bold text-brand-muted transition duration-300 hover:bg-[#F4F0FF] hover:text-brand-primary"
                     >
                       {link.label}
                     </Link>
                   ))}
                 </div>
-                <CTAButton
-                  href="/contact"
-                  variant="primary"
-                  className="mt-3 w-full"
-                  onClick={() => setIsOpen(false)}
-                >
+                <CTAButton href="/contact" variant="primary" className="mt-3 w-full" onClick={() => setIsOpen(false)}>
                   تواصل معنا
                 </CTAButton>
               </div>
