@@ -3,6 +3,7 @@ import { Almarai, IBM_Plex_Sans_Arabic, JetBrains_Mono } from "next/font/google"
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 
 const almarai = Almarai({
   subsets: ["arabic"],
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     default: "Prominent Experts",
     template: "%s | Prominent Experts",
   },
-  description: "وكالة تصميم وتسويق رقمي في السعودية - تصميم مواقع، متاجر إلكترونية، تطبيقات جوال، هوية بصرية.",
+  description: "وكالة تصميم وتسويق رقمي في السعودية - تصميم مواقع، متاجر إلكترونية، تطبيقات جوال، هوية بصرية، حلول ذكاء اصطناعي.",
   robots: { index: true, follow: true },
   openGraph: {
     siteName: "Prominent Experts",
@@ -65,6 +66,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${almarai.variable} ${ibmPlexArabic.variable} ${jetBrainsMono.variable} font-body antialiased`}>
+        <GoogleAnalytics />
         <Navbar />
         <main>{children}</main>
         <Footer />
