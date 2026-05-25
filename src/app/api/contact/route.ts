@@ -1,28 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { sendContactLeadEmail } from "@/lib/email/sendContactLeadEmail";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function sanitize(str: string, maxLen: number): string {
   return str.trim().replace(/<[^>]*>/g, "").slice(0, maxLen);
-}
-
-function buildEmailHtml(data: { name: string; email: string; phone: string; service: string; message: string }): string {
-  return `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;background:#f9f9f9;border-radius:16px;">
-      <div style="background:linear-gradient(135deg,#7448F5,#41C7D7);padding:20px;border-radius:12px;text-align:center;">
-        <h1 style="color:white;margin:0;font-size:20px;">طلب تواصل جديد</h1>
-        <p style="color:rgba(255,255,255,0.8);margin:4px 0 0;font-size:14px;">Prominent Experts</p>
-      </div>
-      <table style="width:100%;border-collapse:collapse;margin-top:20px;">
-        <tr><td style="padding:10px;font-weight:bold;color:#333;width:100px;">الاسم</td><td style="padding:10px;color:#666;">${data.name}</td></tr>
-        <tr style="background:#f0f0f0;"><td style="padding:10px;font-weight:bold;color:#333;">البريد</td><td style="padding:10px;color:#666;">${data.email || "—"}</td></tr>
-        <tr><td style="padding:10px;font-weight:bold;color:#333;">الجوال</td><td style="padding:10px;color:#666;">${data.phone}</td></tr>
-        <tr style="background:#f0f0f0;"><td style="padding:10px;font-weight:bold;color:#333;">الخدمة</td><td style="padding:10px;color:#666;">${data.service}</td></tr>
-        <tr><td style="padding:10px;font-weight:bold;color:#333;vertical-align:top;">الرسالة</td><td style="padding:10px;color:#666;">${data.message}</td></tr>
-      </table>
-      <p style="margin-top:20px;font-size:12px;color:#999;text-align:center;">تم الإرسال عبر موقع promksa.com • ${new Date().toLocaleDateString("ar-SA")}</p>
-    </div>
-  `;
 }
 
 export async function POST(request: NextRequest) {
@@ -35,10 +18,9 @@ export async function POST(request: NextRequest) {
     }
 
     const errors: string[] = [];
-
     if (!name || typeof name !== "string" || name.trim().length < 2) errors.push("الاسم مطلوب");
     if (!phone || typeof phone !== "string" || phone.trim().length < 7) errors.push("رقم الجوال مطلوب");
-    if (!service || typeof service !== "string") errors.push("الخدمة المطلوبة مطلوبة");
+    if (!service || typeof service !== "string" || service.trim().length < 1) errors.push("الخدمة المطلوبة مطلوبة");
     if (!message || typeof message !== "string" || message.trim().length < 10) errors.push("الرسالة يجب أن تحتوي على 10 أحرف على الأقل");
     if (email && typeof email === "string" && email.length > 0 && !emailRegex.test(email)) errors.push("البريد الإلكتروني غير صحيح");
 
@@ -47,51 +29,54 @@ export async function POST(request: NextRequest) {
     }
 
     const data = {
-      name: sanitize(name, 100),
-      email: email ? sanitize(email, 200) : "",
-      phone: sanitize(phone, 20),
-      service: sanitize(service, 100),
-      message: sanitize(message, 2000),
+      name: sanitize(name, 120),
+      email: email ? sanitize(email, 200) : null,
+      phone: sanitize(phone, 40),
+      service: sanitize(service, 120),
+      message: sanitize(message, 3000),
     };
 
-    console.log("[Contact] New submission:", JSON.stringify({ ...data, email: data.email ? "***" : "" }));
+    let leadId: string | undefined;
+    const supabase = createServerSupabaseClient();
 
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-    const contactTo = process.env.CONTACT_TO_EMAIL;
-    const contactFrom = process.env.CONTACT_FROM_EMAIL || smtpUser;
+    if (supabase) {
+      const { data: inserted, error } = await supabase
+        .from("contact_leads")
+        .insert({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          service: data.service,
+          message: data.message,
+          source: "website",
+          ip_address: request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || null,
+          user_agent: request.headers.get("user-agent") || null,
+        })
+        .select("id")
+        .single();
 
-    if (smtpHost && smtpUser && smtpPass && contactTo) {
-      try {
-        const nodemailer = await import("nodemailer");
-        const transporter = nodemailer.default.createTransport({
-          host: smtpHost,
-          port: parseInt(process.env.SMTP_PORT || "587", 10),
-          secure: process.env.SMTP_SECURE === "true",
-          auth: { user: smtpUser, pass: smtpPass },
-        });
-
-        await transporter.sendMail({
-          from: contactFrom || smtpUser,
-          to: contactTo,
-          subject: "طلب تواصل جديد من موقع Prominent Experts",
-          html: buildEmailHtml(data),
-        });
-
-        console.log("[Contact] Email sent successfully");
-      } catch (emailErr) {
-        console.error("[Contact] Email send failed:", emailErr);
+      if (error) {
+        console.error("[Contact] Supabase insert error:", error.message);
+      } else {
+        leadId = inserted?.id;
+        console.log("[Contact] Lead saved to DB:", leadId);
       }
     } else {
-      console.log("[Contact] SMTP not configured, skipping email");
+      console.log("[Contact] Supabase not configured, lead not stored in DB");
+    }
+
+    const emailSent = await sendContactLeadEmail({ ...data, leadId, email: data.email || "" });
+    if (emailSent) {
+      console.log("[Contact] Email sent successfully");
     }
 
     return NextResponse.json({
       success: true,
       message: "تم استلام طلبك بنجاح، وسنتواصل معك قريباً.",
+      leadId: leadId || null,
     });
-  } catch {
+  } catch (err) {
+    console.error("[Contact] Error:", err);
     return NextResponse.json(
       { success: false, message: "تعذر إرسال الطلب حالياً، يمكنك المحاولة مرة أخرى أو التواصل معنا عبر واتساب." },
       { status: 500 },

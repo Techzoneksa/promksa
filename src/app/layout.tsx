@@ -38,7 +38,9 @@ export const metadata: Metadata = {
     locale: "ar_SA",
     type: "website",
   },
-  icons: { icon: "/prominent-logo.svg" },
+  icons: { icon: "/prominent-logo.svg", apple: "/icons/icon-192.svg" },
+  manifest: "/manifest.webmanifest",
+  other: { "theme-color": "#7448F5" },
 };
 
 export default function RootLayout({
