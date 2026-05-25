@@ -96,6 +96,18 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
 
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-brand-primary/60 ring-offset-2;
+  }
+
+  @media (pointer: coarse) {
+    *:focus { outline: none; }
+  }
+
   .bg-purple-gradient {
     background: linear-gradient(135deg, #7448F5 0%, #8B6FF5 50%, #41C7D7 100%);
   }

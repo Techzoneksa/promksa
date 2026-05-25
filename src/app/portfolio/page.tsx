@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useCallback } from "react";
 import Link from "next/link";
 import { ArrowLeft, Search, X } from "lucide-react";
 import { PageHero } from "@/components/ui/PageHero";
@@ -12,6 +12,12 @@ const filters = ["الكل", "مواقع", "متاجر", "تطبيقات", "هو
 export default function PortfolioPage() {
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("الكل");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  const handleSearch = useCallback((value: string) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setSearch(value), 200);
+  }, []);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -48,10 +54,10 @@ export default function PortfolioPage() {
 
             <div className="relative w-full sm:w-64">
               <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-muted" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                <input
+                  type="text"
+                  onChange={(e) => handleSearch(e.target.value)}
+                  defaultValue={search}
                 placeholder="بحث في المشاريع..."
                 className="w-full rounded-xl border border-[#f0edff] bg-white py-2.5 pr-10 pl-10 text-sm text-brand-text placeholder-brand-muted/60 transition focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/20"
               />
